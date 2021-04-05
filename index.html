@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Effect</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <p>I'm&nbsp;</p>
+    <p id="text"></p>
+    <span>|</span>
+    <p>Developer</p>
+
+    <script>
+      textElement = document.getElementById('text');
+
+      const typing = async (text, delay = 200) => {
+        for (let i = 0; i < text.length; i++) {
+          await waitText(delay);
+          textElement.innerHTML += text[i];
+        }
+      }
+
+      const erase = async (delay = 100) => {
+        const text = textElement.textContent;
+        const txt = text.split("");
+        while (txt.length > 0) {
+          await waitText(delay);
+          txt.pop();
+          textElement.innerHTML = txt.join("");
+        }
+      }
+
+      const waitText = (delay) => {
+        return new Promise((resolve) => setTimeout(resolve, delay));
+      }
+
+      const carouselText = [
+        {
+          text: 'Front End', color: "tomato"
+        },
+        {
+          text: 'Back End', color: "orange"
+        }
+      ];
+
+      const carousel = async (carousellist, eleRef) => {
+        let i = 0;
+        while (true) {
+          UpdateFontColor(eleRef, carousellist[i].color);
+          await typing(carousellist[i].text);
+          await waitText(1000);
+          await erase();
+          await waitText(1000);
+          await erase();
+          i++;
+          if (i >= carousellist.length) { i = 0 };
+        }
+      }
+
+      const UpdateFontColor = (eleRef, color) => {
+        eleRef.style.color = color;
+      }
+
+      carousel(carouselText, textElement);
+
+    </script>
+  </body>
+
+
+</html>
